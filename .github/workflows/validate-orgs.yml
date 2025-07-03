@@ -1,0 +1,29 @@
+name: Validate altinn-orgs.json
+
+on:
+  pull_request:
+    paths:
+      - 'orgs/altinn-orgs.json'
+  push:
+    paths:
+      - 'orgs/altinn-orgs.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate altinn-orgs.json
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+          
+      - name: Install AJV CLI
+        run: npm install -g ajv-cli@3.3.0
+        
+      - name: Validate JSON schema
+        run: ajv validate -s orgs/altinn-orgs.schema.json -d orgs/altinn-orgs.json

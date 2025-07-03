@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Altinn Organizations",
+  "description": "Schema for Altinn organizations configuration file",
+  "type": "object",
+  "properties": {
+    "orgs": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9]+$": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "object",
+              "properties": {
+                "en": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "nb": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "nn": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": ["en", "nb", "nn"],
+              "additionalProperties": false
+            },
+            "logo": {
+              "type": "string",
+              "pattern": "^https://altinncdn\\.no/orgs/[a-z0-9]+/[^/]+\\.(png|jpg|jpeg|svg)$|^$",
+              "description": "URL to organization logo on altinncdn.no or empty string"
+            },
+            "orgnr": {
+              "type": "string",
+              "pattern": "^[0-9]{9}$|^$",
+              "description": "Norwegian organization number (9 digits) or empty string"
+            },
+            "homepage": {
+              "type": "string",
+              "pattern": "^https?://[^\\s/$.?#].[^\\s]*$|^$",
+              "description": "Organization homepage URL or empty string"
+            },
+            "environments": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["tt02", "production", "yt01", "at22", "at23", "at24"]
+              },
+              "uniqueItems": true,
+              "description": "List of environments where this organization is available"
+            }
+          },
+          "required": ["name", "orgnr", "homepage", "environments"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["orgs"],
+  "additionalProperties": false
+}
